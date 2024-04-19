@@ -1,4 +1,4 @@
-Room List
+{{ title }}
 
 <table class="table table-primary">
   <tr>
@@ -10,15 +10,11 @@ Room List
     <th>Room Amenities</th>
     <th>Checkin Time</th>
     <th>Rating</th>
+    <th>Select Room</th>
   </tr>
   <tr
     [ngClass]="e ? 'even' : 'odd'"
-    *ngFor="
-      let room of rooms | slice : 0 : 3;
-      let e = even;
-      let o = odd;
-      let i = index
-    "
+    *ngFor="let room of rooms; let e = even; let o = odd; let i = index"
   >
     <!-- pipe -->
     <td>{{ i + 1 | percent }}</td>
@@ -29,5 +25,8 @@ Room List
     <td>{{ room.amenities | titlecase }}</td>
     <td>{{ room.checkinTime | date : "dd/MMM/yyyy" }}</td>
     <td>{{ room.rating | number : "1.0-0" }}</td>
+    <td>
+      <button class="btn btn-primary" (click)="selectRoom(room)">Select</button>
+    </td>
   </tr>
 </table>

@@ -57,9 +57,41 @@ export class RoomsComponent implements OnInit {
     bookedRooms: 5,
   };
 
+  title: string = 'Room List';
+
   roomList: RoomList[] = [];
+
+  selectedRoom!: RoomList;
 
   toggle() {
     this.toggleRooms = !this.toggleRooms;
+    this.title = 'Rooms List';
+  }
+
+  selectRoom(room: RoomList) {
+    this.selectedRoom = room;
+  }
+
+  addRoom() {
+    const room: RoomList = {
+      roomNumber: 4,
+      roomType: 'Deluxe Room',
+      amenities: 'Air Conditioner, Free Wi-Fi, TV, Bathroom, Kitchen',
+      price: 1500,
+      photos: '',
+      checkinTime: new Date('11-Nov-2021'),
+      checkoutTime: new Date('12-Nov-2021'),
+      rating: 2.9,
+    };
+
+    /*
+    Below code can not work after change detection strategy is defined.
+    roomList variable is passed to child component rooms-list.
+    we need to reassign value to the roomList variable.
+    */
+    //this.roomList.push(room);
+
+    // [...oldArray, newItem] new way to append value to existing array
+    this.roomList = [...this.roomList, room];
   }
 }

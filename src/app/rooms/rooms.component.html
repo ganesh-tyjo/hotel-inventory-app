@@ -20,9 +20,21 @@
 <!-- pipe -->
 <!-- {{ roomList | json }} -->
 
+<div *ngIf="selectedRoom">
+  {{ selectedRoom | json }}
+</div>
+
+<div>
+  <button class="btn btn-info" (click)="addRoom()">Add Room</button>
+</div>
+
 <!-- Directive -->
 <div *ngIf="rooms.availableRooms > 0">
-  <app-rooms-list [rooms]="roomList"></app-rooms-list>
+  <app-rooms-list
+    [rooms]="roomList"
+    [title]="title"
+    (selectedRoom)="selectRoom($event)"
+  ></app-rooms-list>
 </div>
 
 <!-- event binding -->
