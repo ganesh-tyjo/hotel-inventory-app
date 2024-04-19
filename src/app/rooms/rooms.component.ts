@@ -1,18 +1,57 @@
-import { Component, OnInit } from '@angular/core';
+import {
+  AfterViewChecked,
+  AfterViewInit,
+  Component,
+  DoCheck,
+  OnInit,
+  QueryList,
+  ViewChild,
+  ViewChildren,
+} from '@angular/core';
 import { Room, RoomList } from './rooms';
 import { CommonModule } from '@angular/common';
 import { RoomsListComponent } from './rooms-list/rooms-list.component';
+import { HeaderComponent } from '../header/header.component';
 
 @Component({
   selector: 'app-rooms',
   standalone: true,
-  imports: [CommonModule, RoomsListComponent],
+  imports: [CommonModule, RoomsListComponent, HeaderComponent],
   templateUrl: './rooms.component.html',
   styleUrl: './rooms.component.scss',
 })
-export class RoomsComponent implements OnInit {
+export class RoomsComponent
+  implements OnInit, DoCheck, AfterViewInit, AfterViewChecked
+{
+  ngAfterViewChecked(): void {
+    //this.headerComponent.title = 'Rooms View';
+  }
+
+  ngAfterViewInit(): void {
+    /*
+    After running below code you will get ExpressionChangedAfterItHasBeenCheckedError.
+    It is totally normal if you get this code in development mode.
+    But if you get this error in production mode then you can not ignore it.
+    The reason of getting this error in development mode is Angular is checking this twice
+    */
+    this.headerComponent.title = 'Rooms View';
+
+    // Did not understand use of ViewChildren Decorator
+    // this.headerComponentChildren.last.title = 'Last Title';
+  }
+  // Lifecycle hook
+  ngDoCheck(): void {
+    /*
+    this will get called for any event which is triggered in current page.
+    Do not use ngDoCheck and ngOnChanges on same component as they will be doing exact same thing.
+    */
+    //console.log('On changes is called');
+  }
+
   // Lifecycle hook
   ngOnInit(): void {
+    // console.log(this.headerComponent);
+
     this.roomList = [
       {
         roomNumber: 1,
@@ -46,6 +85,15 @@ export class RoomsComponent implements OnInit {
       },
     ];
   }
+
+  // @ViewChild(HeaderComponent, { static: true })
+  // headerComponent!: HeaderComponent;
+  @ViewChild(HeaderComponent)
+  headerComponent!: HeaderComponent;
+
+  // Did not understand use of ViewChildren Decorator
+  // @ViewChildren(HeaderComponent)
+  // headerComponentChildren!: QueryList<HeaderComponent>;
 
   hotelName: string = 'Hilton Hotel';
   numberOfRooms: number = 25;
