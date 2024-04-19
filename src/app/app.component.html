@@ -7,7 +7,14 @@
   </head>
   <body>
     <h1>Hello world!</h1>
-    <app-rooms></app-rooms>
+
+    <app-container>
+      <app-rooms></app-rooms>
+      <app-employee></app-employee>
+      <!--This gets loaded into ng-content tag inside container component.
+      This is helpful when you want to insert dynamic content inside a component.-->
+      <h1>This is loaded from ng-content</h1>
+    </app-container>
 
     <div #name></div>
     <!-- directives -->

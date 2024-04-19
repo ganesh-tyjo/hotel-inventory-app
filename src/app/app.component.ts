@@ -11,6 +11,8 @@ import { RoomsComponent } from './rooms/rooms.component';
 import { CommonModule } from '@angular/common';
 import { RoomsListComponent } from './rooms/rooms-list/rooms-list.component';
 import { HeaderComponent } from './header/header.component';
+import { ContainerComponent } from './container/container.component';
+import { EmployeeComponent } from './employee/employee.component';
 
 @Component({
   selector: 'app-root',
@@ -21,6 +23,8 @@ import { HeaderComponent } from './header/header.component';
     RoomsComponent,
     RoomsListComponent,
     HeaderComponent,
+    ContainerComponent,
+    EmployeeComponent,
   ],
   templateUrl: './app.component.html',
   // OR

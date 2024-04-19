@@ -31,7 +31,7 @@
 </div>
 
 <!-- Directive -->
-<div *ngIf="rooms.availableRooms > 0">
+<div *ngIf="toggleRooms">
   <app-rooms-list
     [rooms]="roomList"
     [title]="title"
