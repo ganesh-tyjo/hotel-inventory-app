@@ -2,7 +2,9 @@ import {
   AfterViewInit,
   Component,
   ElementRef,
+  Inject,
   OnInit,
+  Optional,
   ViewChild,
   ViewContainerRef,
 } from '@angular/core';
@@ -13,6 +15,9 @@ import { RoomsListComponent } from './rooms/rooms-list/rooms-list.component';
 import { HeaderComponent } from './header/header.component';
 import { ContainerComponent } from './container/container.component';
 import { EmployeeComponent } from './employee/employee.component';
+import { LoggerService } from './logger.service';
+import { APP_CONFIG, APP_SERVICE_CONFIG } from './AppConfig/appconfig.service';
+import { LocalStorageToken } from './localstorage.token';
 
 @Component({
   selector: 'app-root',
@@ -26,6 +31,12 @@ import { EmployeeComponent } from './employee/employee.component';
     ContainerComponent,
     EmployeeComponent,
   ],
+  providers: [
+    {
+      provide: APP_SERVICE_CONFIG,
+      useValue: APP_CONFIG,
+    },
+  ],
   templateUrl: './app.component.html',
   // OR
   // template: `<h1>Hello there from inline template</h1>
@@ -35,6 +46,11 @@ import { EmployeeComponent } from './employee/employee.component';
   //styles: `h1{color:red}`,
 })
 export class AppComponent implements OnInit {
+  constructor(
+    @Optional() private loggerService: LoggerService,
+    @Inject(LocalStorageToken) private localStorage: Storage
+  ) {}
+
   title = 'hotel-inventory-app';
 
   role: string = 'Admin';
@@ -42,7 +58,9 @@ export class AppComponent implements OnInit {
   @ViewChild('name', { static: true }) name!: ElementRef;
 
   ngOnInit(): void {
+    this.loggerService?.log('AppComponent.ngOnInit()');
     this.name.nativeElement.innerHTML = '<h1>Hilton Hotel</h1>';
+    this.localStorage.setItem('name', 'Hilton Hotel');
   }
 
   /*
