@@ -18,6 +18,7 @@ import { EmployeeComponent } from './employee/employee.component';
 import { LoggerService } from './logger.service';
 import { APP_CONFIG, APP_SERVICE_CONFIG } from './AppConfig/appconfig.service';
 import { LocalStorageToken } from './localstorage.token';
+import { HttpClientModule } from '@angular/common/http';
 
 @Component({
   selector: 'app-root',
@@ -30,6 +31,7 @@ import { LocalStorageToken } from './localstorage.token';
     HeaderComponent,
     ContainerComponent,
     EmployeeComponent,
+    HttpClientModule
   ],
   providers: [
     {

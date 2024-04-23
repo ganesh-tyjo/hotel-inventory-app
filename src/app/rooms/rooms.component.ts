@@ -14,6 +14,7 @@ import { CommonModule } from '@angular/common';
 import { RoomsListComponent } from './rooms-list/rooms-list.component';
 import { HeaderComponent } from '../header/header.component';
 import { RoomsService } from './services/rooms.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-rooms',
@@ -57,7 +58,14 @@ export class RoomsComponent
   ngOnInit(): void {
     // console.log(this.headerComponent);
 
-    this.roomList = this.roomService.getRooms();
+    this.stream.subscribe({
+      next: (value) => console.log(value),
+      complete: () => console.log('complete'),
+      error: (err) => console.log(err),
+    });
+    this.roomService.getRooms().subscribe((rooms) => {
+      this.roomList = rooms;
+    });
   }
 
   // @ViewChild(HeaderComponent, { static: true })
@@ -81,6 +89,13 @@ export class RoomsComponent
 
   title: string = 'Room List';
 
+  stream = new Observable((observer) => {
+    observer.next('user1');
+    observer.next('user2');
+    observer.next('user3');
+    observer.complete();
+  });
+
   roomList: RoomList[] = [];
 
   selectedRoom!: RoomList;
@@ -96,7 +111,7 @@ export class RoomsComponent
 
   addRoom() {
     const room: RoomList = {
-      roomNumber: 4,
+      roomNumber: '4',
       roomType: 'Deluxe Room',
       amenities: 'Air Conditioner, Free Wi-Fi, TV, Bathroom, Kitchen',
       price: 1500,
