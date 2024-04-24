@@ -3,6 +3,8 @@
 
 <app-header></app-header>
 
+<!-- {{ rooms$ | async | json }} -->
+
 <div [hidden]="toggleRooms">
   Number of rooms:
   <!-- property binding -->
@@ -30,10 +32,13 @@
   <button class="btn btn-info" (click)="addRoom()">Add Room</button>
 </div>
 
+<h1>{{ getError$ | async }}</h1>
+<h1>Number of rooms: {{ roomsCount$ | async }}</h1>
+
 <!-- Directive -->
-<div *ngIf="toggleRooms">
+<div *ngIf="rooms$ | async as rooms">
   <app-rooms-list
-    [rooms]="roomList"
+    [rooms]="rooms"
     [title]="title"
     (selectedRoom)="selectRoom($event)"
   ></app-rooms-list>
@@ -41,3 +46,7 @@
 
 <!-- event binding -->
 <button (click)="toggle()">Toggle Rooms</button>
+<button (click)="editRoom()">Edit Rooms</button>
+<button (click)="deleteRoom()">Delete Rooms</button>
+
+<h1>{{ totalBytes }} Loaded</h1>

@@ -31,7 +31,7 @@ export class RoomsListComponent implements OnChanges, OnDestroy {
   }
   // Decorator to retrieve data from parent component RoomsComponent and use that in current component AKA child component
   // Component communication
-  @Input() rooms: RoomList[] = [];
+  @Input() rooms: RoomList[] | null = [];
 
   @Input() title: string = '';
 

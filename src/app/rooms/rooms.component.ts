@@ -14,7 +14,8 @@ import { CommonModule } from '@angular/common';
 import { RoomsListComponent } from './rooms-list/rooms-list.component';
 import { HeaderComponent } from '../header/header.component';
 import { RoomsService } from './services/rooms.service';
-import { Observable } from 'rxjs';
+import { Observable, Subject, Subscription, catchError, map, of } from 'rxjs';
+import { HttpEventType } from '@angular/common/http';
 
 @Component({
   selector: 'app-rooms',
@@ -54,18 +55,50 @@ export class RoomsComponent
     //console.log('On changes is called');
   }
 
+  totalBytes: number = 0;
+  subscription!: Subscription;
+  error$ = new Subject<string>();
+  getError$ = this.error$.asObservable();
+
+  rooms$ = this.roomService.getRooms$.pipe(
+    catchError((err) => {
+      // console.log(err);
+      this.error$.next(err.message);
+      return of([]);
+    })
+  );
+
+  roomsCount$ = this.roomService.getRooms$.pipe(map((rooms) => rooms.length));
+
   // Lifecycle hook
   ngOnInit(): void {
     // console.log(this.headerComponent);
+
+    this.roomService.getPhotos().subscribe((event) => {
+      switch (event.type) {
+        case HttpEventType.Sent:
+          console.log('Request has been made');
+          break;
+        case HttpEventType.ResponseHeader:
+          console.log('Request success');
+          break;
+        case HttpEventType.DownloadProgress:
+          this.totalBytes += event.loaded;
+          break;
+        case HttpEventType.Response:
+          console.log(event.body);
+      }
+    });
 
     this.stream.subscribe({
       next: (value) => console.log(value),
       complete: () => console.log('complete'),
       error: (err) => console.log(err),
     });
-    this.roomService.getRooms().subscribe((rooms) => {
-      this.roomList = rooms;
-    });
+
+    // this.roomService.getRooms$.subscribe((rooms) => {
+    //   this.roomList = rooms;
+    // });
   }
 
   // @ViewChild(HeaderComponent, { static: true })
@@ -79,7 +112,7 @@ export class RoomsComponent
 
   hotelName: string = 'Hilton Hotel';
   numberOfRooms: number = 25;
-  toggleRooms: boolean = false;
+  toggleRooms: boolean = true;
 
   rooms: Room = {
     totalRooms: 20,
@@ -111,7 +144,7 @@ export class RoomsComponent
 
   addRoom() {
     const room: RoomList = {
-      roomNumber: '4',
+      // roomNumber: '4',
       roomType: 'Deluxe Room',
       amenities: 'Air Conditioner, Free Wi-Fi, TV, Bathroom, Kitchen',
       price: 1500,
@@ -129,6 +162,37 @@ export class RoomsComponent
     //this.roomList.push(room);
 
     // [...oldArray, newItem] new way to append value to existing array
-    this.roomList = [...this.roomList, room];
+    //this.roomList = [...this.roomList, room];
+
+    this.roomService.addRoom(room).subscribe((data) => {
+      this.roomList = data;
+    });
   }
+
+  editRoom() {
+    const room: RoomList = {
+      roomNumber: '3',
+      roomType: 'Deluxe Room 1',
+      amenities: 'Air Conditioner, Free Wi-Fi, TV, Bathroom, Kitchen',
+      price: 2500,
+      photos: '',
+      checkinTime: new Date('11-Nov-2021'),
+      checkoutTime: new Date('12-Nov-2021'),
+      rating: 4.6,
+    };
+
+    this.roomService.editRoom(room).subscribe((data) => {
+      this.roomList = data;
+    });
+  }
+
+  deleteRoom() {
+    this.roomService.deleteRoom('3').subscribe((data) => {
+      this.roomList = data;
+    });
+  }
+
+  // ngOnDestroy() {
+  //   if (this.subscription) this.subscription.unsubscribe();
+  // }
 }

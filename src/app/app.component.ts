@@ -19,6 +19,7 @@ import { LoggerService } from './logger.service';
 import { APP_CONFIG, APP_SERVICE_CONFIG } from './AppConfig/appconfig.service';
 import { LocalStorageToken } from './localstorage.token';
 import { HttpClientModule } from '@angular/common/http';
+import { RoomsService } from './rooms/services/rooms.service';
 
 @Component({
   selector: 'app-root',
@@ -31,13 +32,14 @@ import { HttpClientModule } from '@angular/common/http';
     HeaderComponent,
     ContainerComponent,
     EmployeeComponent,
-    HttpClientModule
+    HttpClientModule,
   ],
   providers: [
     {
       provide: APP_SERVICE_CONFIG,
       useValue: APP_CONFIG,
     },
+    RoomsService,
   ],
   templateUrl: './app.component.html',
   // OR
