@@ -20,6 +20,7 @@ import { APP_CONFIG, APP_SERVICE_CONFIG } from './AppConfig/appconfig.service';
 import { LocalStorageToken } from './localstorage.token';
 import { HttpClientModule } from '@angular/common/http';
 import { RoomsService } from './rooms/services/rooms.service';
+import { InitService } from './init.service';
 
 @Component({
   selector: 'app-root',
@@ -32,7 +33,6 @@ import { RoomsService } from './rooms/services/rooms.service';
     HeaderComponent,
     ContainerComponent,
     EmployeeComponent,
-    HttpClientModule,
   ],
   providers: [
     {
@@ -52,8 +52,11 @@ import { RoomsService } from './rooms/services/rooms.service';
 export class AppComponent implements OnInit {
   constructor(
     @Optional() private loggerService: LoggerService,
-    @Inject(LocalStorageToken) private localStorage: Storage
-  ) {}
+    @Inject(LocalStorageToken) private localStorage: Storage,
+    private initService: InitService
+  ) {
+    console.log(initService.config);
+  }
 
   title = 'hotel-inventory-app';
 
