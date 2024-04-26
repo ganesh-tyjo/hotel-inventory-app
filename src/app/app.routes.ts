@@ -4,6 +4,7 @@ import { RoomsComponent } from './rooms/rooms.component';
 import { NotfoundComponent } from './notfound/notfound.component';
 import { RoomsBookingComponent } from './rooms/rooms-booking/rooms-booking.component';
 import { RoomsAddComponent } from './rooms/rooms-add/rooms-add.component';
+import { LoginComponent } from './login/login.component';
 
 export const routes: Routes = [
   {
@@ -20,10 +21,11 @@ export const routes: Routes = [
     path: 'rooms/:id',
     component: RoomsBookingComponent,
   },
+  { path: 'login', component: LoginComponent },
   // Default route
   {
     path: '',
-    component: RoomsComponent,
+    redirectTo: '/login',
     pathMatch: 'full',
   },
   // Wild card route
