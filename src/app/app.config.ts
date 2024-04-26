@@ -20,6 +20,7 @@ export const appConfig: ApplicationConfig = {
       useFactory: initFactory,
       deps: [InitService],
       multi: true,
-    }, provideAnimationsAsync(),
+    },
+    provideAnimationsAsync(),
   ],
 };

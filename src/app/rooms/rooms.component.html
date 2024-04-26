@@ -28,10 +28,6 @@
   {{ selectedRoom | json }}
 </div>
 
-<div>
-  <button class="btn btn-info" (click)="addRoom()">Add Room</button>
-</div>
-
 <h1>{{ getError$ | async }}</h1>
 <h1>Number of rooms: {{ roomsCount$ | async }}</h1>
 
