@@ -7,6 +7,7 @@ import { RoomsAddComponent } from './rooms/rooms-add/rooms-add.component';
 import { LoginComponent } from './login/login.component';
 import { loginGuard } from './guards/login.guard';
 import { roomGuard } from './rooms/guards/room.guard';
+import { BookingComponent } from './booking/booking.component';
 
 export const routes: Routes = [
   {
@@ -29,14 +30,19 @@ export const routes: Routes = [
         component: RoomsBookingComponent,
       },
     ],
-    canActivate: [loginGuard],
-    canActivateChild: [roomGuard],
+    // canActivate: [loginGuard],
+    // canActivateChild: [roomGuard],
   },
   // Dynamic route
   // {
   //   path: 'rooms/:id',
   //   component: RoomsBookingComponent,
   // },
+  {
+    path: 'booking',
+    component: BookingComponent,
+    // canActivate: [loginGuard]
+  },
   { path: 'login', component: LoginComponent },
   // Default route
   {

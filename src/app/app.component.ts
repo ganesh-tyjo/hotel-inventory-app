@@ -31,6 +31,7 @@ import { InitService } from './init.service';
 import { AppNavComponent } from './app-nav/app-nav.component';
 import { ConfigService } from './services/config.service';
 import { filter } from 'rxjs';
+import { BookingComponent } from './booking/booking.component';
 
 @Component({
   selector: 'app-root',
@@ -58,6 +59,7 @@ import { filter } from 'rxjs';
     ContainerComponent,
     EmployeeComponent,
     AppNavComponent,
+    BookingComponent,
   ],
 })
 export class AppComponent implements OnInit {
