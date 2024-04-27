@@ -17,6 +17,7 @@ import { RoomsService } from './services/rooms.service';
 import { Observable, Subject, Subscription, catchError, map, of } from 'rxjs';
 import { HttpEventType } from '@angular/common/http';
 import { RouterOutlet } from '@angular/router';
+import { ConfigService } from '../services/config.service';
 
 @Component({
   selector: 'app-rooms',
@@ -29,7 +30,10 @@ export class RoomsComponent
   implements OnInit, DoCheck, AfterViewInit, AfterViewChecked
 {
   // Dependency Injection, Service is injected
-  constructor(@SkipSelf() private roomService: RoomsService) {}
+  constructor(
+    @SkipSelf() private roomService: RoomsService,
+    private config: ConfigService
+  ) {}
 
   ngAfterViewChecked(): void {
     //this.headerComponent.title = 'Rooms View';

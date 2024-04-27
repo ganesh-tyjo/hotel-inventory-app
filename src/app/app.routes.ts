@@ -5,11 +5,19 @@ import { NotfoundComponent } from './notfound/notfound.component';
 import { RoomsBookingComponent } from './rooms/rooms-booking/rooms-booking.component';
 import { RoomsAddComponent } from './rooms/rooms-add/rooms-add.component';
 import { LoginComponent } from './login/login.component';
+import { loginGuard } from './guards/login.guard';
+import { roomGuard } from './rooms/guards/room.guard';
 
 export const routes: Routes = [
   {
     path: 'employee',
     component: EmployeeComponent,
+    canActivate: [loginGuard],
+  },
+  {
+    path: 'rooms/add',
+    component: RoomsAddComponent,
+    canActivate: [loginGuard],
   },
   // Nested routing
   {
@@ -21,8 +29,9 @@ export const routes: Routes = [
         component: RoomsBookingComponent,
       },
     ],
+    canActivate: [loginGuard],
+    canActivateChild: [roomGuard],
   },
-  { path: 'rooms/add', component: RoomsAddComponent },
   // Dynamic route
   // {
   //   path: 'rooms/:id',
