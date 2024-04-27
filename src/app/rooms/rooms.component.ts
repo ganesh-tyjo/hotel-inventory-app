@@ -16,11 +16,12 @@ import { HeaderComponent } from '../header/header.component';
 import { RoomsService } from './services/rooms.service';
 import { Observable, Subject, Subscription, catchError, map, of } from 'rxjs';
 import { HttpEventType } from '@angular/common/http';
+import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-rooms',
   standalone: true,
-  imports: [CommonModule, RoomsListComponent, HeaderComponent],
+  imports: [CommonModule, RoomsListComponent, HeaderComponent, RouterOutlet],
   templateUrl: './rooms.component.html',
   styleUrl: './rooms.component.scss',
 })

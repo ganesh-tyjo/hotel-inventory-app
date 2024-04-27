@@ -11,16 +11,23 @@ export const routes: Routes = [
     path: 'employee',
     component: EmployeeComponent,
   },
+  // Nested routing
   {
     path: 'rooms',
     component: RoomsComponent,
+    children: [
+      {
+        path: ':id',
+        component: RoomsBookingComponent,
+      },
+    ],
   },
   { path: 'rooms/add', component: RoomsAddComponent },
   // Dynamic route
-  {
-    path: 'rooms/:id',
-    component: RoomsBookingComponent,
-  },
+  // {
+  //   path: 'rooms/:id',
+  //   component: RoomsBookingComponent,
+  // },
   { path: 'login', component: LoginComponent },
   // Default route
   {
