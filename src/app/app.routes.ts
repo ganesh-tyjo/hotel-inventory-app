@@ -8,6 +8,7 @@ import { LoginComponent } from './login/login.component';
 import { loginGuard } from './guards/login.guard';
 import { roomGuard } from './rooms/guards/room.guard';
 import { BookingComponent } from './booking/booking.component';
+import { bookingGuard } from './booking/guards/booking.guard';
 
 export const routes: Routes = [
   {
@@ -24,14 +25,14 @@ export const routes: Routes = [
   {
     path: 'rooms',
     component: RoomsComponent,
-    children: [
-      {
-        path: ':id',
-        component: RoomsBookingComponent,
-      },
-    ],
-    canActivate: [loginGuard],
-    canActivateChild: [roomGuard],
+    // children: [
+    //   {
+    //     path: ':id',
+    //     component: RoomsBookingComponent,
+    //   },
+    // ],
+    // canActivate: [loginGuard],
+    // canActivateChild: [roomGuard],
   },
   // Dynamic route
   // {
@@ -39,9 +40,10 @@ export const routes: Routes = [
   //   component: RoomsBookingComponent,
   // },
   {
-    path: 'booking',
+    path: 'booking/:id',
     component: BookingComponent,
     canActivate: [loginGuard],
+    canDeactivate: [bookingGuard],
   },
   { path: 'login', component: LoginComponent },
   // Default route

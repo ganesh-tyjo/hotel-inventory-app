@@ -11,14 +11,14 @@ import {
 } from '@angular/core';
 import { RoomList } from '../rooms';
 import { RouterLink } from '@angular/router';
+import { FilterPipe } from '../filter.pipe';
 
 @Component({
   selector: 'app-rooms-list',
   standalone: true,
-  imports: [CommonModule, RouterLink],
   templateUrl: './rooms-list.component.html',
   styleUrl: './rooms-list.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [CommonModule, RouterLink, FilterPipe],
 })
 export class RoomsListComponent implements OnChanges, OnDestroy {
   ngOnDestroy(): void {
@@ -32,7 +32,9 @@ export class RoomsListComponent implements OnChanges, OnDestroy {
   }
   // Decorator to retrieve data from parent component RoomsComponent and use that in current component AKA child component
   // Component communication
-  @Input() rooms: RoomList[] | null = [];
+  @Input() rooms: RoomList[] = [];
+
+  @Input() price = 0;
 
   @Input() title: string = '';
 

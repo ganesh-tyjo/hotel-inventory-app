@@ -20,6 +20,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { BookingService } from './booking.service';
 import { exhaustMap, mergeMap, switchMap } from 'rxjs';
 import { CustomValidator } from './validators/custom-validator';
+import { ActivatedRoute } from '@angular/router';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-booking',
@@ -35,6 +37,7 @@ import { CustomValidator } from './validators/custom-validator';
     MatExpansionModule,
     MatIconModule,
     MatCheckboxModule,
+    MatSnackBarModule,
   ],
   templateUrl: './booking.component.html',
   styleUrl: './booking.component.scss',
@@ -49,14 +52,17 @@ export class BookingComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private bookingService: BookingService
+    private bookingService: BookingService,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit() {
+    const roomId = this.route.snapshot.paramMap.get('id');
+
     this.bookingForm = this.fb.group(
       {
         roomId: new FormControl(
-          { value: '2', disabled: true },
+          { value: roomId, disabled: true },
           { validators: [Validators.required] }
         ),
         guestEmail: [
@@ -174,7 +180,6 @@ export class BookingComponent implements OnInit {
 
   getBookingData() {
     this.bookingForm.patchValue({
-      roomId: '2',
       guestEmail: 'test@gmail.com',
       checkinDate: new Date('16-Jun-2021'),
       checkoutDate: '',

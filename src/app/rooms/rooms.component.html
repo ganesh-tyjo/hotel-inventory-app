@@ -31,11 +31,22 @@
 <h1>{{ getError$ | async }}</h1>
 <h1>Number of rooms: {{ roomsCount$ | async }}</h1>
 
+<div>
+  <input
+    type="number"
+    [formControl]="priceFilter"
+    class="form-control"
+    placeholder="Price"
+  />
+  {{ priceFilter.value }}
+</div>
+
 <!-- Directive -->
 <div *ngIf="rooms$ | async as rooms">
   <app-rooms-list
     [rooms]="rooms"
     [title]="title"
+    [price]="getPrice()"
     (selectedRoom)="selectRoom($event)"
   ></app-rooms-list>
 </div>

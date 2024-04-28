@@ -18,11 +18,18 @@ import { Observable, Subject, Subscription, catchError, map, of } from 'rxjs';
 import { HttpEventType } from '@angular/common/http';
 import { RouterOutlet } from '@angular/router';
 import { ConfigService } from '../services/config.service';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-rooms',
   standalone: true,
-  imports: [CommonModule, RoomsListComponent, HeaderComponent, RouterOutlet],
+  imports: [
+    CommonModule,
+    RoomsListComponent,
+    HeaderComponent,
+    RouterOutlet,
+    ReactiveFormsModule,
+  ],
   templateUrl: './rooms.component.html',
   styleUrl: './rooms.component.scss',
 })
@@ -72,6 +79,12 @@ export class RoomsComponent
       return of([]);
     })
   );
+
+  priceFilter = new FormControl('0');
+
+  getPrice() {
+    return Number(this.priceFilter.value);
+  }
 
   roomsCount$ = this.roomService.getRooms$.pipe(map((rooms) => rooms.length));
 
