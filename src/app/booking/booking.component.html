@@ -1,7 +1,7 @@
-{{ bookingForm.pristine | json }}
+<!-- {{ bookingForm.pristine | json }}
 {{ bookingForm.valid | json }}
-{{ bookingForm.value | json }}
-
+{{ bookingForm.value | json }} 
+{{ bookingForm.errors | json }} -->
 <div>
   <button
     mat-raised-button
@@ -42,6 +42,7 @@
       formControlName="guestName"
       #nameFormControl
     />
+    <!-- {{ bookingForm.get("guestName")?.errors | json }} -->
     <mat-error *ngIf="bookingForm.get('guestName')?.hasError('minlength')">
       Guest name must be 5 chars
     </mat-error>
@@ -104,6 +105,11 @@
       [for]="checkoutDate"
     ></mat-datepicker-toggle>
     <mat-datepicker #checkoutDate></mat-datepicker>
+    <mat-error *ngIf="bookingForm.get('checkoutDate')?.hasError('invalidDate')">
+      Checkout Date must be greater that Checkin Date
+    </mat-error>
+
+    <!-- {{ bookingForm.get("checkoutDate")?.errors | json }} -->
   </mat-form-field>
   <mat-form-field>
     <mat-label>Booking Date</mat-label>

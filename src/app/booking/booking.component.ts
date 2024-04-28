@@ -19,6 +19,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatIconModule } from '@angular/material/icon';
 import { BookingService } from './booking.service';
 import { exhaustMap, mergeMap, switchMap } from 'rxjs';
+import { CustomValidator } from './validators/custom-validator';
 
 @Component({
   selector: 'app-booking',
@@ -71,7 +72,15 @@ export class BookingComponent implements OnInit {
         bookingAmount: [''],
         bookingDate: [''],
         mobileNumber: ['', { updateOn: 'blur' }],
-        guestName: ['', [Validators.required, Validators.minLength(5)]],
+        guestName: [
+          '',
+          [
+            Validators.required,
+            Validators.minLength(5),
+            CustomValidator.ValidateName,
+            CustomValidator.ValidateSpecialChar('*'),
+          ],
+        ],
         address: this.fb.group({
           addressLine1: ['', [Validators.required]],
           addressLine2: [''],
@@ -83,6 +92,8 @@ export class BookingComponent implements OnInit {
         guests: this.fb.array([this.addGuestControl()]),
         tnc: new FormControl(false, { validators: [Validators.required] }),
       },
+      // Custom date validator, but it has problem as it is not considering other form validators hence commented.
+      // { updateOn: 'blur', validators: [CustomValidator.ValidateDate] }
       { updateOn: 'blur' }
     );
 
