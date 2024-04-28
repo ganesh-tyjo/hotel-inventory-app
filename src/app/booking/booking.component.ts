@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import {
+  FormArray,
   FormBuilder,
   FormControl,
   FormGroup,
@@ -33,6 +34,11 @@ import { MatExpansionModule } from '@angular/material/expansion';
 export class BookingComponent implements OnInit {
   bookingForm!: FormGroup;
 
+  // Getter
+  get guests() {
+    return this.bookingForm.get('guests') as FormArray;
+  }
+
   constructor(private fb: FormBuilder) {}
 
   ngOnInit() {
@@ -54,9 +60,30 @@ export class BookingComponent implements OnInit {
         country: [''],
         zipCode: [''],
       }),
-      guestCount: [''],
-      guestList: [''],
+      guests: this.fb.array([this.addGuestControl()]),
     });
+  }
+
+  addPassport() {
+    this.bookingForm.addControl('passport', new FormControl(''));
+  }
+
+  removePassport() {
+    if (this.bookingForm.get('passport'))
+      this.bookingForm.removeControl('passport');
+  }
+
+  addGuest() {
+    // Dynamically adding form group to existing form array
+    this.guests.push(this.addGuestControl());
+  }
+
+  private addGuestControl() {
+    return this.fb.group({ guestName: [''], age: [''] });
+  }
+
+  removeGuest(index: number) {
+    this.guests.removeAt(index);
   }
 
   addBooking() {

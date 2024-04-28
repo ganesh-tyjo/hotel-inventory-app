@@ -1,10 +1,34 @@
-<p>booking works!</p>
-
 {{ bookingForm.pristine | json }}
 {{ bookingForm.valid | json }}
 {{ bookingForm.value | json }}
 
+<div>
+  <button
+    mat-raised-button
+    color="primary"
+    type="button"
+    (click)="addPassport()"
+  >
+    Add Passport
+  </button>
+  <button
+    mat-raised-button
+    color="primary"
+    type="button"
+    (click)="removePassport()"
+  >
+    Remove Passport
+  </button>
+</div>
+
 <form class="example-form" [formGroup]="bookingForm" (ngSubmit)="addBooking()">
+  <!-- Dynamic form field handling for passport field -->
+  <mat-form-field
+    class="example-full-width"
+    *ngIf="bookingForm.get('passport')"
+  >
+    <input matInput placeholder="Passport Number" formControlName="passport" />
+  </mat-form-field>
   <mat-form-field class="example-full-width">
     <input matInput placeholder="Room ID" formControlName="roomId" />
     <!-- <mat-error
@@ -84,30 +108,6 @@
     ></mat-datepicker-toggle>
     <mat-datepicker #bookingDate></mat-datepicker>
   </mat-form-field>
-  <!--<mat-form-field class="example-full-width">
-    <input matInput placeholder="Room ID" formControlName="roomId" />
-  </mat-form-field>
-  <mat-form-field class="example-full-width">
-    <input matInput placeholder="Room ID" formControlName="roomId" />
-  </mat-form-field>
-  <mat-form-field class="example-full-width">
-    <input matInput placeholder="Room ID" formControlName="roomId" />
-  </mat-form-field>
-  <mat-form-field class="example-full-width">
-    <input matInput placeholder="Room ID" formControlName="roomId" />
-  </mat-form-field>
-  <mat-form-field class="example-full-width">
-    <input matInput placeholder="Room ID" formControlName="roomId" />
-  </mat-form-field>
-  <mat-form-field class="example-full-width">
-    <input matInput placeholder="Room ID" formControlName="roomId" />
-  </mat-form-field>
-  <mat-form-field class="example-full-width">
-    <input matInput placeholder="Room ID" formControlName="roomId" />
-  </mat-form-field>
-  <mat-form-field class="example-full-width">
-    <input matInput placeholder="Room ID" formControlName="roomId" />
-  </mat-form-field> -->
 
   <div formGroupName="address">
     <mat-expansion-panel>
@@ -144,7 +144,54 @@
       </mat-form-field>
     </mat-expansion-panel>
   </div>
+  <div>
+    <button
+      mat-raised-button
+      color="primary"
+      type="button"
+      (click)="addGuest()"
+    >
+      Add Guest
+    </button>
+  </div>
+  <div formArrayName="guests">
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title> Guests </mat-panel-title>
+      </mat-expansion-panel-header>
 
+      <div *ngFor="let guest of guests.controls; let i = index">
+        <div [formGroupName]="i">
+          <mat-form-field class="example-full-width">
+            <input
+              matInput
+              placeholder="Guest Name"
+              formControlName="guestName"
+            />
+          </mat-form-field>
+          <mat-form-field class="example-full-width">
+            <input
+              matInput
+              placeholder="Guest Age"
+              formControlName="age"
+              type="number"
+            />
+          </mat-form-field>
+        </div>
+
+        <div>
+          <button
+            mat-raised-button
+            color="primary"
+            type="button"
+            (click)="removeGuest(i)"
+          >
+            Remove Guest
+          </button>
+        </div>
+      </div>
+    </mat-expansion-panel>
+  </div>
   <div>
     <button mat-raised-button color="primary" type="submit">Book Room</button>
   </div>
