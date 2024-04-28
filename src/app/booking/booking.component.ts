@@ -17,6 +17,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatIconModule } from '@angular/material/icon';
+import { BookingService } from './booking.service';
+import { exhaustMap, mergeMap, switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-booking',
@@ -44,33 +46,62 @@ export class BookingComponent implements OnInit {
     return this.bookingForm.get('guests') as FormArray;
   }
 
-  constructor(private fb: FormBuilder) {}
+  constructor(
+    private fb: FormBuilder,
+    private bookingService: BookingService
+  ) {}
 
   ngOnInit() {
-    this.bookingForm = this.fb.group({
-      roomId: new FormControl(
-        { value: '2', disabled: true },
-        { validators: [Validators.required] }
-      ),
-      guestEmail: ['', [Validators.required, Validators.email]],
-      checkinDate: [''],
-      checkoutDate: [''],
-      bookingStatus: [''],
-      bookingAmount: [''],
-      bookingDate: [''],
-      mobileNumber: [''],
-      guestName: ['', [Validators.required, Validators.minLength(5)]],
-      address: this.fb.group({
-        addressLine1: ['', [Validators.required]],
-        addressLine2: [''],
-        city: ['', [Validators.required]],
-        state: ['', [Validators.required]],
-        country: [''],
-        zipCode: [''],
-      }),
-      guests: this.fb.array([this.addGuestControl()]),
-      tnc: new FormControl(false, { validators: [Validators.required] }),
+    this.bookingForm = this.fb.group(
+      {
+        roomId: new FormControl(
+          { value: '2', disabled: true },
+          { validators: [Validators.required] }
+        ),
+        guestEmail: [
+          '',
+          {
+            updateOn: 'blur',
+            validators: [Validators.required, Validators.email],
+          },
+        ],
+        checkinDate: [''],
+        checkoutDate: [''],
+        bookingStatus: [''],
+        bookingAmount: [''],
+        bookingDate: [''],
+        mobileNumber: ['', { updateOn: 'blur' }],
+        guestName: ['', [Validators.required, Validators.minLength(5)]],
+        address: this.fb.group({
+          addressLine1: ['', [Validators.required]],
+          addressLine2: [''],
+          city: ['', [Validators.required]],
+          state: ['', [Validators.required]],
+          country: [''],
+          zipCode: [''],
+        }),
+        guests: this.fb.array([this.addGuestControl()]),
+        tnc: new FormControl(false, { validators: [Validators.required] }),
+      },
+      { updateOn: 'blur' }
+    );
+
+    this.getBookingData();
+
+    this.bookingForm.valueChanges.subscribe((data) => {
+      console.log(data);
     });
+
+    // this.bookingForm.valueChanges.subscribe((data) => {
+    //   this.bookingService.bookRoom(data).subscribe((data) => {
+    //     console.log(data);
+    //   });
+    // });
+
+    // RXJS map operators
+    // this.bookingForm.valueChanges
+    //   .pipe(exhaustMap((data) => this.bookingService.bookRoom(data)))
+    //   .subscribe((data) => console.log(data));
   }
 
   addPassport() {
@@ -100,6 +131,13 @@ export class BookingComponent implements OnInit {
 
   addBooking() {
     console.log(this.bookingForm.getRawValue());
+
+    // this.bookingService
+    //   .bookRoom(this.bookingForm.getRawValue())
+    //   .subscribe((data) => {
+    //     console.log(data);
+    //   });
+
     this.bookingForm.reset({
       roomId: '2',
       guestEmail: '',
@@ -123,7 +161,27 @@ export class BookingComponent implements OnInit {
     });
   }
 
-  // getBookingData(){
-  //  this.bookingForm.setValue()
-  // }
+  getBookingData() {
+    this.bookingForm.patchValue({
+      roomId: '2',
+      guestEmail: 'test@gmail.com',
+      checkinDate: new Date('16-Jun-2021'),
+      checkoutDate: '',
+      bookingStatus: '',
+      bookingAmount: '',
+      bookingDate: '',
+      mobileNumber: '',
+      guestName: '',
+      address: {
+        addressLine1: '',
+        addressLine2: '',
+        city: '',
+        state: '',
+        country: '',
+        zipCode: '',
+      },
+      guests: [],
+      tnc: false,
+    });
+  }
 }
