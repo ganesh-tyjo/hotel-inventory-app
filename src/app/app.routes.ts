@@ -30,8 +30,8 @@ export const routes: Routes = [
         component: RoomsBookingComponent,
       },
     ],
-    // canActivate: [loginGuard],
-    // canActivateChild: [roomGuard],
+    canActivate: [loginGuard],
+    canActivateChild: [roomGuard],
   },
   // Dynamic route
   // {
@@ -41,7 +41,7 @@ export const routes: Routes = [
   {
     path: 'booking',
     component: BookingComponent,
-    // canActivate: [loginGuard]
+    canActivate: [loginGuard],
   },
   { path: 'login', component: LoginComponent },
   // Default route
